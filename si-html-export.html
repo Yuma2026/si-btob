@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Systèmes d'Information BtoB</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0F172A;font-family:system-ui,sans-serif;color:#F1F5F9;min-height:100vh}
+  ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:#1E293B} ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+  button{transition:all 0.2s}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const glossaire = [
+  {acronyme:"CRM",complet:"Customer Relationship Management",categorie:"Commercial",couleur:"#3B82F6",description:"Logiciel de gestion de la relation client. Centralise toutes les interactions avec les prospects et clients : suivi des opportunités, historique des échanges, pipeline commercial. Ex : Salesforce, HubSpot, Pipedrive."},
+  {acronyme:"ERP",complet:"Enterprise Resource Planning",categorie:"Core",couleur:"#8B5CF6",description:"Progiciel de gestion intégré. Le système central de l'entreprise qui connecte finance, RH, achats, production et logistique dans une seule base de données. Ex : SAP, Oracle, Sage."},
+  {acronyme:"WMS",complet:"Warehouse Management System",categorie:"Logistique",couleur:"#F59E0B",description:"Système de gestion d'entrepôt. Pilote les opérations logistiques : réception, stockage, picking, expédition des marchandises. Ex : Manhattan, Reflex WMS."},
+  {acronyme:"OMS",complet:"Order Management System",categorie:"Logistique",couleur:"#F59E0B",description:"Système de gestion des commandes. Orchestre le cycle de vie complet d'une commande : création, allocation du stock, suivi de livraison et gestion des retours. Ex : Orderhive, IBM Sterling, Salesforce OMS."},
+  {acronyme:"TMS",complet:"Transportation Management System",categorie:"Logistique",couleur:"#F59E0B",description:"Système de gestion du transport. Optimise la planification et le suivi des expéditions, gestion des transporteurs, traçabilité livraisons. Ex : Generix, Shiptify."},
+  {acronyme:"DWH",complet:"Data Warehouse",categorie:"Data",couleur:"#10B981",description:"Entrepôt de données. Base de données centralisée qui agrège et structure toutes les données de l'entreprise pour l'analyse et le reporting. Ex : Snowflake, BigQuery, Redshift."},
+  {acronyme:"ETL",complet:"Extract, Transform, Load",categorie:"Data",couleur:"#10B981",description:"Processus d'extraction, transformation et chargement des données. Pipeline qui collecte les données depuis les différents SI, les nettoie/transforme, puis les charge dans le Data Warehouse. Ex : Talend, Fivetran, Airbyte."},
+  {acronyme:"BI",complet:"Business Intelligence",categorie:"Data",couleur:"#10B981",description:"Intelligence d'affaires. Ensemble d'outils qui transforment les données brutes en tableaux de bord et rapports décisionnels. Ex : Power BI, Tableau, Looker."},
+  {acronyme:"API",complet:"Application Programming Interface",categorie:"Technique",couleur:"#6B7280",description:"Interface de programmation. Protocole qui permet à deux logiciels de communiquer entre eux et d'échanger des données en temps réel. Colonne vertébrale de l'intégration entre SI."},
+  {acronyme:"iPaaS",complet:"Integration Platform as a Service",categorie:"Technique",couleur:"#6B7280",description:"Plateforme d'intégration cloud. Middleware qui orchestre et automatise les flux de données entre les différentes applications de l'entreprise sans coder. Ex : Zapier, Make, MuleSoft."},
+  {acronyme:"MDM",complet:"Master Data Management",categorie:"Data",couleur:"#10B981",description:"Gestion des données de référence. Gouvernance et centralisation des données clés de l'entreprise (clients, produits, fournisseurs) pour garantir leur cohérence dans tous les SI."},
+  {acronyme:"PIM",complet:"Product Information Management",categorie:"Marketing",couleur:"#EC4899",description:"Gestion de l'information produit. Centralise et enrichit toutes les données produits (descriptions, photos, specs) pour les diffuser sur les différents canaux. Ex : Akeneo."},
+  {acronyme:"DAM",complet:"Digital Asset Management",categorie:"Marketing",couleur:"#EC4899",description:"Gestion des assets digitaux. Bibliothèque centralisée pour stocker, organiser et distribuer tous les fichiers média (images, vidéos, documents). Ex : Bynder, Canto."},
+  {acronyme:"MAP",complet:"Marketing Automation Platform",categorie:"Marketing",couleur:"#EC4899",description:"Plateforme d'automatisation marketing. Automatise les campagnes emails, lead nurturing, scoring des prospects. Souvent connecté au CRM. Ex : Marketo, Pardot, Brevo."},
+  {acronyme:"CDP",complet:"Customer Data Platform",categorie:"Data",couleur:"#10B981",description:"Plateforme de données clients. Agrège toutes les données clients (web, CRM, email, achat) en un profil unifié 360°. Ex : Segment, Klaviyo."},
+  {acronyme:"CX",complet:"Helpdesk / CX Platform",categorie:"Commercial",couleur:"#3B82F6",description:"Plateforme de support et d'expérience client. Gère le support omnicanal (emails, chat, WhatsApp, réseaux sociaux, tickets). Ex : Zendesk, Intercom, Freshdesk."},
+  {acronyme:"HRIS",complet:"Human Resource Information System",categorie:"RH",couleur:"#F97316",description:"Système d'information RH. Gère l'ensemble des données et processus RH : paie, recrutement, formation, congés, évaluations. Ex : Workday, Lucca, BambooHR."},
+  {acronyme:"SCM",complet:"Supply Chain Management",categorie:"Logistique",couleur:"#F59E0B",description:"Gestion de la chaîne d'approvisionnement. Pilotage de l'ensemble du flux physique et informationnel, des fournisseurs jusqu'aux clients finaux."},
+  {acronyme:"MES",complet:"Manufacturing Execution System",categorie:"Production",couleur:"#DC2626",description:"Système d'exécution de la production. Pilote et trace en temps réel les opérations de fabrication en atelier. Ex : Delmia, FactoryTalk."},
+  {acronyme:"SaaS",complet:"Software as a Service",categorie:"Technique",couleur:"#6B7280",description:"Logiciel en tant que service. Modèle de distribution où le logiciel est hébergé dans le cloud et accessible via abonnement. Ex : Salesforce, Microsoft 365."},
+  {acronyme:"SSO",complet:"Single Sign-On",categorie:"Technique",couleur:"#6B7280",description:"Authentification unique. Permet à un utilisateur de se connecter une seule fois pour accéder à plusieurs applications. Ex : Okta, Azure AD."},
+  {acronyme:"EDI",complet:"Electronic Data Interchange",categorie:"Technique",couleur:"#6B7280",description:"Échange de données informatisé. Protocole standardisé pour échanger automatiquement des documents commerciaux entre entreprises."},
+];
+
+const steps = [
+  {id:1,si:"MAP",couleur:"#EC4899",icon:"📧",titre:"Campagne email déclenchée",description:"La MAP envoie une campagne email ciblée à Sophie, cliente existante, avec une offre promotionnelle sur un logiciel SaaS. Sophie clique sur le lien.",detail:"Le comportement de Sophie (ouverture, clic) est tracé et son score de lead augmente automatiquement dans la MAP."},
+  {id:2,si:"CDP",couleur:"#10B981",icon:"👤",titre:"Profil client unifié consulté",description:"Le CDP reconnaît Sophie grâce à son email et agrège toutes ses données : historique d'achats, interactions support, pages visitées, campagnes reçues.",detail:"Ces données enrichissent le contexte disponible pour le commercial et les systèmes aval en temps réel."},
+  {id:3,si:"CRM",couleur:"#3B82F6",icon:"🤝",titre:"Opportunité créée & devis envoyé",description:"Le commercial reçoit une alerte dans le CRM. Il consulte le profil de Sophie, crée une opportunité et envoie un devis personnalisé depuis le CRM.",detail:"Le CRM enregistre chaque interaction : appels, emails, étapes du pipeline. Le devis est lié à la fiche client."},
+  {id:4,si:"PIM",couleur:"#EC4899",icon:"📦",titre:"Fiche produit consultée",description:"Au moment de construire le devis, le CRM interroge le PIM via API pour récupérer les descriptions, tarifs et caractéristiques exactes du produit commandé.",detail:"Le PIM garantit que les informations produit sont identiques sur tous les canaux : site web, devis, catalogue."},
+  {id:5,si:"iPaaS / API",couleur:"#6366F1",icon:"🔗",titre:"Commande transmise via iPaaS",description:"Sophie valide le devis. Le CRM déclenche automatiquement via l'iPaaS l'envoi de la commande vers l'OMS, l'ERP et le WMS simultanément.",detail:"L'iPaaS orchestre les flux de données entre les SI sans développement ad hoc. C'est le chef d'orchestre de l'architecture."},
+  {id:6,si:"OMS",couleur:"#F59E0B",icon:"🛒",titre:"Commande enregistrée & stock alloué",description:"L'OMS reçoit la commande, vérifie la disponibilité du produit, alloue le stock et génère un ordre de préparation vers l'entrepôt.",detail:"L'OMS est le pivot entre la vente et la logistique. Il gère aussi les règles de priorité et les cas de rupture."},
+  {id:7,si:"ERP",couleur:"#8B5CF6",icon:"🏢",titre:"Facture générée & comptabilité mise à jour",description:"L'ERP reçoit la commande validée, génère automatiquement la facture, enregistre l'écriture comptable et met à jour les stocks comptables.",detail:"L'ERP est la source de vérité financière. Il gère aussi les règles de TVA, devises, et les rapprochements bancaires."},
+  {id:8,si:"WMS",couleur:"#F59E0B",icon:"🏭",titre:"Préparation de la commande en entrepôt",description:"Le WMS reçoit l'ordre de préparation de l'OMS. Il guide les opérateurs dans l'entrepôt : picking, contrôle qualité, emballage, étiquetage.",detail:"Le WMS optimise les déplacements en entrepôt et garantit la traçabilité de chaque article préparé."},
+  {id:9,si:"ETL → DWH",couleur:"#10B981",icon:"🗄️",titre:"Données agrégées dans le Data Warehouse",description:"L'ETL collecte en temps réel les données de tous les SI (CRM, OMS, ERP, WMS) et les charge dans le Data Warehouse pour analyse.",detail:"Le DWH centralise toutes les données de l'entreprise dans un format cohérent, prêt pour l'analyse BI."},
+  {id:10,si:"CX",couleur:"#3B82F6",icon:"💬",titre:"Sophie suit sa commande & contacte le support",description:"Sophie reçoit un email de confirmation puis un lien de suivi. Elle a une question et contacte le support via chat. Un ticket est créé dans la CX Platform.",detail:"La CX Platform est connectée au CRM et à l'OMS : l'agent voit l'historique client et le statut de la commande en temps réel."},
+  {id:11,si:"BI",couleur:"#34D399",icon:"📊",titre:"Le manager analyse les performances",description:"Le directeur commercial consulte son dashboard BI : taux de conversion de la campagne MAP, délai moyen de livraison, revenus de la semaine, satisfaction client.",detail:"La BI agrège les données du DWH pour produire des insights actionnables. C'est la couche de décision de toute l'architecture."},
+];
+
+const categories = ["Tous","Core","Commercial","Marketing","Data","Logistique","RH","Production","Technique"];
+const catCouleurs = {Core:"#8B5CF6",Commercial:"#3B82F6",Marketing:"#EC4899",Data:"#10B981",Logistique:"#F59E0B",RH:"#F97316",Production:"#DC2626",Technique:"#6B7280"};
+
+const Schema = () => (
+  <div style={{overflowX:"auto"}}>
+    <svg viewBox="0 0 960 680" style={{width:"100%",minWidth:750}}>
+      <rect width="960" height="680" fill="#0F172A" rx="16"/>
+      <text x="480" y="35" textAnchor="middle" fill="#F1F5F9" fontSize="15" fontWeight="bold">Architecture des Systèmes d'Information d'Entreprise</text>
+      <text x="480" y="62" textAnchor="middle" fill="#94A3B8" fontSize="11">― Couche Opérationnelle ―</text>
+      {[{x:20,label:"CRM",sub:"Clients / Ventes",c:"#3B82F6",bg:"#1E3A5F"},{x:125,label:"CX",sub:"Support Client",c:"#3B82F6",bg:"#1E3A5F"},{x:230,label:"ERP",sub:"Finance / RH / Achats",c:"#8B5CF6",bg:"#2D1B69"},{x:335,label:"WMS",sub:"Entrepôt / Stock",c:"#F59E0B",bg:"#3D2A00"},{x:440,label:"OMS",sub:"Commandes",c:"#F59E0B",bg:"#3D2A00"},{x:545,label:"MAP",sub:"Marketing Auto",c:"#EC4899",bg:"#3D0030"},{x:650,label:"HRIS",sub:"Ressources Humaines",c:"#F97316",bg:"#3D1500"},{x:755,label:"MES",sub:"Production",c:"#DC2626",bg:"#3D0000"},{x:860,label:"PIM",sub:"Produits",c:"#EC4899",bg:"#3D0030"}].map((s,i)=>(
+        <g key={i}>
+          <rect x={s.x} y="72" width="95" height="50" rx="8" fill={s.bg} stroke={s.c} strokeWidth="2"/>
+          <text x={s.x+47} y="94" textAnchor="middle" fill={s.c} fontSize="12" fontWeight="bold">{s.label}</text>
+          <text x={s.x+47} y="110" textAnchor="middle" fill="#94A3B8" fontSize="8">{s.sub}</text>
+        </g>
+      ))}
+      {[67,172,277,382,487,592,697,802,900].map((x,i)=>(
+        <line key={i} x1={x} y1="122" x2={x} y2="170" stroke="#334155" strokeWidth="1.5" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      ))}
+      <rect x="20" y="170" width="920" height="55" rx="10" fill="#1A2744" stroke="#6366F1" strokeWidth="2"/>
+      <text x="480" y="194" textAnchor="middle" fill="#818CF8" fontSize="13" fontWeight="bold">iPaaS / API Gateway / EDI</text>
+      <text x="480" y="213" textAnchor="middle" fill="#94A3B8" fontSize="10">Couche d'intégration & orchestration des flux — connecte tous les systèmes entre eux</text>
+      <line x1="480" y1="225" x2="480" y2="265" stroke="#334155" strokeWidth="2" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      <rect x="300" y="265" width="360" height="50" rx="10" fill="#0F2A1A" stroke="#10B981" strokeWidth="2"/>
+      <text x="480" y="287" textAnchor="middle" fill="#10B981" fontSize="13" fontWeight="bold">ETL / ELT</text>
+      <text x="480" y="305" textAnchor="middle" fill="#94A3B8" fontSize="10">Extract → Transform → Load  |  Fivetran, Airbyte, Talend</text>
+      <line x1="480" y1="315" x2="480" y2="353" stroke="#334155" strokeWidth="2" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      <text x="480" y="346" textAnchor="middle" fill="#94A3B8" fontSize="11">― Couche Données ―</text>
+      <rect x="20" y="356" width="155" height="55" rx="10" fill="#0F2A1A" stroke="#10B981" strokeWidth="1.5"/>
+      <text x="97" y="380" textAnchor="middle" fill="#10B981" fontSize="12" fontWeight="bold">MDM</text>
+      <text x="97" y="397" textAnchor="middle" fill="#94A3B8" fontSize="9">Données de référence</text>
+      <rect x="195" y="356" width="370" height="55" rx="10" fill="#0F2A1A" stroke="#10B981" strokeWidth="2.5"/>
+      <text x="380" y="380" textAnchor="middle" fill="#10B981" fontSize="14" fontWeight="bold">DATA WAREHOUSE</text>
+      <text x="380" y="398" textAnchor="middle" fill="#94A3B8" fontSize="10">Snowflake · BigQuery · Redshift</text>
+      <rect x="585" y="356" width="155" height="55" rx="10" fill="#0F2A1A" stroke="#10B981" strokeWidth="1.5"/>
+      <text x="662" y="380" textAnchor="middle" fill="#10B981" fontSize="12" fontWeight="bold">CDP</text>
+      <text x="662" y="397" textAnchor="middle" fill="#94A3B8" fontSize="9">Profil client 360°</text>
+      <rect x="760" y="356" width="180" height="55" rx="10" fill="#3D0030" stroke="#EC4899" strokeWidth="1.5"/>
+      <text x="850" y="380" textAnchor="middle" fill="#EC4899" fontSize="12" fontWeight="bold">DAM</text>
+      <text x="850" y="397" textAnchor="middle" fill="#94A3B8" fontSize="9">Assets Digitaux</text>
+      <line x1="97" y1="411" x2="300" y2="458" stroke="#334155" strokeWidth="1.5" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      <line x1="380" y1="411" x2="430" y2="458" stroke="#334155" strokeWidth="2" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      <line x1="662" y1="411" x2="560" y2="458" stroke="#334155" strokeWidth="1.5" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      <text x="480" y="452" textAnchor="middle" fill="#94A3B8" fontSize="11">― Couche Décisionnelle ―</text>
+      <rect x="200" y="460" width="560" height="55" rx="10" fill="#0B3D2E" stroke="#34D399" strokeWidth="2.5"/>
+      <text x="480" y="484" textAnchor="middle" fill="#34D399" fontSize="14" fontWeight="bold">BUSINESS INTELLIGENCE (BI)</text>
+      <text x="480" y="502" textAnchor="middle" fill="#94A3B8" fontSize="10">Dashboards · KPIs · Rapports  |  Power BI · Tableau · Looker</text>
+      <line x1="480" y1="515" x2="480" y2="548" stroke="#334155" strokeWidth="2" strokeDasharray="4,3" markerEnd="url(#arr)"/>
+      <rect x="200" y="550" width="560" height="50" rx="10" fill="#1E293B" stroke="#F1F5F9" strokeWidth="1.5"/>
+      <text x="480" y="572" textAnchor="middle" fill="#F1F5F9" fontSize="13" fontWeight="bold">👥 Décideurs & Équipes</text>
+      <text x="480" y="591" textAnchor="middle" fill="#94A3B8" fontSize="10">CEO · DAF · DRH · Directeur Commercial · Ops</text>
+      <rect x="20" y="555" width="100" height="38" rx="8" fill="#1E293B" stroke="#6B7280" strokeWidth="1.5"/>
+      <text x="70" y="572" textAnchor="middle" fill="#9CA3AF" fontSize="11" fontWeight="bold">SSO</text>
+      <text x="70" y="587" textAnchor="middle" fill="#6B7280" fontSize="9">Auth unique</text>
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+);
+
+const CasUsage = () => {
+  const [active, setActive] = React.useState(0);
+  const step = steps[active];
+  return (
+    <div style={{display:"flex",gap:24}}>
+      <div style={{width:260,flexShrink:0,overflowY:"auto",maxHeight:"75vh"}}>
+        {steps.map((s,i)=>(
+          <div key={i} onClick={()=>setActive(i)} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"12px 14px",borderRadius:10,marginBottom:6,cursor:"pointer",background:active===i?`${s.couleur}18`:"#1E293B",border:active===i?`1.5px solid ${s.couleur}`:"1.5px solid transparent"}}>
+            <div style={{width:32,height:32,borderRadius:"50%",background:active===i?s.couleur:"#334155",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0}}>{s.icon}</div>
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:active===i?s.couleur:"#64748B"}}>Étape {s.id} · {s.si}</div>
+              <div style={{fontSize:12,color:active===i?"#F1F5F9":"#94A3B8",lineHeight:1.4,marginTop:2}}>{s.titre}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{flex:1}}>
+        <div style={{background:"#1E293B",borderRadius:12,padding:"14px 20px",marginBottom:16,borderLeft:"4px solid #6366F1"}}>
+          <div style={{fontSize:12,color:"#818CF8",fontWeight:700,marginBottom:4}}>🏢 CAS CONCRET — Entreprise e-commerce B2B</div>
+          <div style={{fontSize:13,color:"#94A3B8"}}>Sophie, DRH d'une PME de 80 personnes, commande un logiciel SaaS RH. Suivez le parcours de sa commande à travers tous les systèmes d'information.</div>
+        </div>
+        <div style={{background:"#1E293B",borderRadius:16,padding:"28px 32px",border:`2px solid ${step.couleur}55`,boxShadow:`0 0 30px ${step.couleur}22`}}>
+          <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:20}}>
+            <div style={{width:56,height:56,borderRadius:14,background:`${step.couleur}22`,border:`2px solid ${step.couleur}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28}}>{step.icon}</div>
+            <div>
+              <div style={{fontSize:12,color:step.couleur,fontWeight:700,marginBottom:4}}>ÉTAPE {step.id} / {steps.length} · {step.si}</div>
+              <div style={{fontSize:20,fontWeight:800,color:"#F1F5F9"}}>{step.titre}</div>
+            </div>
+          </div>
+          <div style={{background:"#0F172A",borderRadius:999,height:6,marginBottom:24,overflow:"hidden"}}>
+            <div style={{width:`${(active+1)/steps.length*100}%`,height:"100%",background:`linear-gradient(90deg,#6366F1,${step.couleur})`,borderRadius:999,transition:"width 0.4s"}}/>
+          </div>
+          <div style={{background:"#0F172A",borderRadius:12,padding:"18px 20px",marginBottom:16}}>
+            <div style={{fontSize:13,color:"#6366F1",fontWeight:700,marginBottom:8}}>📌 Ce qui se passe</div>
+            <div style={{fontSize:14,color:"#CBD5E1",lineHeight:1.7}}>{step.description}</div>
+          </div>
+          <div style={{background:`${step.couleur}0f`,borderRadius:12,padding:"16px 20px",border:`1px solid ${step.couleur}33`}}>
+            <div style={{fontSize:13,color:step.couleur,fontWeight:700,marginBottom:8}}>💡 Pour aller plus loin</div>
+            <div style={{fontSize:13,color:"#94A3B8",lineHeight:1.7}}>{step.detail}</div>
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",marginTop:24}}>
+            <button onClick={()=>setActive(Math.max(0,active-1))} disabled={active===0} style={{padding:"10px 22px",borderRadius:8,border:"none",cursor:active===0?"not-allowed":"pointer",background:active===0?"#1E293B":"#334155",color:active===0?"#475569":"#F1F5F9",fontWeight:600,fontSize:13}}>← Précédent</button>
+            <div style={{display:"flex",gap:6,alignItems:"center"}}>
+              {steps.map((_,i)=>(
+                <div key={i} onClick={()=>setActive(i)} style={{width:active===i?20:8,height:8,borderRadius:999,background:active===i?step.couleur:"#334155",cursor:"pointer",transition:"all 0.2s"}}/>
+              ))}
+            </div>
+            <button onClick={()=>setActive(Math.min(steps.length-1,active+1))} disabled={active===steps.length-1} style={{padding:"10px 22px",borderRadius:8,border:"none",cursor:active===steps.length-1?"not-allowed":"pointer",background:active===steps.length-1?"#1E293B":step.couleur,color:"#fff",fontWeight:600,fontSize:13}}>Suivant →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const [filtre, setFiltre] = React.useState("Tous");
+  const [recherche, setRecherche] = React.useState("");
+  const [onglet, setOnglet] = React.useState("glossaire");
+  const [ouvert, setOuvert] = React.useState(null);
+
+  const filtres = glossaire.filter(g =>
+    (filtre==="Tous"||g.categorie===filtre) &&
+    (g.acronyme.toLowerCase().includes(recherche.toLowerCase())||g.complet.toLowerCase().includes(recherche.toLowerCase())||g.description.toLowerCase().includes(recherche.toLowerCase()))
+  );
+
+  return (
+    <div style={{background:"#0F172A",minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:"#F1F5F9"}}>
+      <div style={{background:"linear-gradient(135deg,#1E3A5F,#2D1B69)",padding:"24px 32px",borderBottom:"1px solid #1E293B"}}>
+        <h1 style={{margin:0,fontSize:22,fontWeight:800}}>🖥️ Systèmes d'Information BtoB</h1>
+        <p style={{margin:"6px 0 0",color:"#94A3B8",fontSize:13}}>Glossaire complet & Architecture des SI — Formation équipe commerciale SaaS</p>
+      </div>
+      <div style={{display:"flex",gap:8,padding:"16px 32px",borderBottom:"1px solid #1E293B",flexWrap:"wrap"}}>
+        {[{id:"glossaire",label:"📖 Glossaire"},{id:"schema",label:"🗺️ Schéma Architecture"},{id:"cas",label:"🛒 Cas Concret — Parcours commande"}].map(o=>(
+          <button key={o.id} onClick={()=>setOnglet(o.id)} style={{padding:"8px 20px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:600,fontSize:13,background:onglet===o.id?"#3B82F6":"#1E293B",color:onglet===o.id?"#fff":"#94A3B8"}}>{o.label}</button>
+        ))}
+      </div>
+
+      {onglet==="glossaire" && (
+        <div style={{padding:"24px 32px"}}>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16}}>
+            <input value={recherche} onChange={e=>setRecherche(e.target.value)} placeholder="🔍 Rechercher..." style={{padding:"8px 14px",borderRadius:8,border:"1px solid #334155",background:"#1E293B",color:"#F1F5F9",fontSize:13,width:200}}/>
+            {categories.map(c=>(
+              <button key={c} onClick={()=>setFiltre(c)} style={{padding:"7px 14px",borderRadius:8,border:"none",cursor:"pointer",fontSize:12,fontWeight:600,background:filtre===c?(catCouleurs[c]||"#3B82F6"):"#1E293B",color:filtre===c?"#fff":"#94A3B8"}}>{c}</button>
+            ))}
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:16}}>
+            {filtres.map((g,i)=>(
+              <div key={i} onClick={()=>setOuvert(ouvert===i?null:i)} style={{background:"#1E293B",borderRadius:12,border:`1px solid ${g.couleur}33`,padding:"16px 20px",cursor:"pointer",boxShadow:ouvert===i?`0 0 20px ${g.couleur}44`:"none",position:"relative"}}>
+                {(g.acronyme==="OMS"||g.acronyme==="CX")&&<span style={{position:"absolute",top:10,right:10,background:"#3B82F6",color:"#fff",fontSize:9,fontWeight:700,padding:"2px 6px",borderRadius:4}}>NOUVEAU</span>}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div>
+                    <span style={{fontSize:22,fontWeight:900,color:g.couleur}}>{g.acronyme}</span>
+                    <span style={{marginLeft:10,fontSize:11,background:`${g.couleur}22`,color:g.couleur,padding:"2px 8px",borderRadius:20,fontWeight:600}}>{g.categorie}</span>
+                  </div>
+                  <span style={{color:"#475569",fontSize:18}}>{ouvert===i?"▲":"▼"}</span>
+                </div>
+                <div style={{fontSize:12,color:"#64748B",marginTop:4,fontStyle:"italic"}}>{g.complet}</div>
+                {ouvert===i&&<div style={{marginTop:12,fontSize:13,color:"#CBD5E1",lineHeight:1.6,borderTop:`1px solid ${g.couleur}33`,paddingTop:12}}>{g.description}</div>}
+              </div>
+            ))}
+          </div>
+          <p style={{color:"#475569",fontSize:12,marginTop:16}}>{filtres.length} terme(s) affiché(s) · Cliquez sur une carte pour voir la définition</p>
+        </div>
+      )}
+      {onglet==="schema"&&<div style={{padding:"24px 32px"}}><Schema/><div style={{display:"flex",flexWrap:"wrap",gap:12,marginTop:16,justifyContent:"center"}}>{Object.entries(catCouleurs).map(([cat,col])=><div key={cat} style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:12,height:12,borderRadius:3,background:col}}/><span style={{fontSize:12,color:"#94A3B8"}}>{cat}</span></div>)}</div></div>}
+      {onglet==="cas"&&<div style={{padding:"24px 32px"}}><CasUsage/></div>}
+    </div>
+  );
+};
+
+ReactDOM.render(<App/>, document.getElementById('root'));
+</script>
+</body>
+</html>
